@@ -78,7 +78,7 @@ export default function App() {
     const apptTime = timeSlots[available];
     const apptLength = appointment.length * 15;
     if (index === 0){
-      setMessage("Next appointment is at " + apptTime + " lasting " + apptLength + " minutes.");  
+      setMessage("Earliest appointment is at " + apptTime + " lasting " + apptLength + " minutes.");  
     }
     else {
       setMessage("Current appointment is at " + apptTime + " lasting " + apptLength + " minutes.");
@@ -126,7 +126,7 @@ export default function App() {
         
         // if server responds with no available slot
         if(data.message === "No available slot"){
-          alert("no available slot");
+          alert("no available appointment slots.");
           return;
         }
         const posLength = data.all_positions.length - 1;
@@ -217,17 +217,6 @@ export default function App() {
     });
   };
 
-{/* <button 
-            onClick={incrementPrev}
-            disabled={available === null || !appointment}
-            style={{ marginTop: 16, padding: "8px 16px", cursor: available === null ? "not-allowed" : "pointer" }}>
-              Previous
-            </button>
-            <button 
-            disabled={available === null || !appointment}
-            style={{ marginTop: 16, padding: "8px 16px", cursor: available === null ? "not-allowed" : "pointer" }}>
-              Next
-            </button> */}
 
 
   return (
@@ -242,7 +231,7 @@ export default function App() {
           <h4>
             Block out availability by clicking a table cell.<br/>
             White indicates available and a color indicates busy.<br/>
-            Click "Find appointment" to display the soonest appointment.<br/><br/>
+            Click "Find appointment" to display the Earliest appointment.<br/><br/>
 
             
             Red indicates the cells that will change to busy if accepted.<br/>
