@@ -99,7 +99,7 @@ export default function AppointmentStructure({baseTimes, onSetTimes, baseDay, on
                         </td>    
                     </tr>
                     <tr>
-                        {STRUCTURE.map(place => (<td>{place}</td>))}
+                        {STRUCTURE.map((place, idx) => (<td key={idx}>{place}</td>))}
                     </tr>
                     <tr>
                         {times.map((time, idx) => (

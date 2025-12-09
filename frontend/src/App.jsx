@@ -56,12 +56,14 @@ export default function App() {
   const [baseDay, onSetDay] = useState(DAY);
 
   // this marks return from the backend
-  //const [returning, setReturning] = useState(null)
+  
   const [available, setAvailable] = useState(null);
+  const [availableArray, setAvailableArray] = useState(null);
   const [appointment, setAppointment] = useState(null);
   const [message, setMessage] = useState("");
-  // cycling through appointments 
-  //const [index, setIndex] = useState(0);
+  // cycling through appointments
+  const [availableLength, setLength] = useState(null)
+  const [index, setIndex] = useState(0);
 
   // 
   useEffect(() => {
@@ -70,6 +72,26 @@ export default function App() {
     setAppointment(null);
     setMessage("");
   }, [baseDay]);
+  
+  useEffect(() => {
+    if (available === null || !appointment || !appointment.length) return;
+    const apptTime = timeSlots[available];
+    const apptLength = appointment.length * 15;
+    if (index === 0){
+      setMessage("Next appointment is at " + apptTime + " lasting " + apptLength + " minutes.");  
+    }
+    else {
+      setMessage("Current appointment is at " + apptTime + " lasting " + apptLength + " minutes.");
+    }
+    
+  }, [available]);
+
+  useEffect(() => {
+    if (availableArray != null){
+      setAvailable(availableArray[index]);
+    }
+    
+  }, [index]);
 
   // changes appointment time structure
   const handleSetTimes = (newTimes) => {
@@ -107,14 +129,16 @@ export default function App() {
           alert("no available slot");
           return;
         }
-
+        const posLength = data.all_positions.length - 1;
         const apptTime = timeSlots[data.all_positions[0]];
         const apptLength = data.appointment.length * 15;
         //setReturning(data.all_positions)
         // else we set the new appointment and the structure
-        setAvailable(data.all_positions[0]);
+        setLength(posLength);
+        setIndex(0);
+        setAvailableArray(data.all_positions);
+        setAvailable(data.all_positions[index]);
         setAppointment(data.appointment);
-        setMessage("Next appointment is at " + apptTime + " lasting " + apptLength + " minutes.");
       // catch an error
       } catch(err) {
         console.error("Error submitting:", err);
@@ -170,6 +194,29 @@ export default function App() {
     setMessage("");
   };
 
+  const handlePrev = () => {
+    if (availableLength == 0) return ;
+    setIndex(prev => {
+      if (prev === 0){
+        return availableLength;
+      }
+      else{
+        return prev - 1;
+      }
+    });
+  };
+  const handleNext = () => {
+    if (availableLength == 0) return ;
+    setIndex(prev => {
+      if (prev === availableLength){
+        return 0;
+      }
+      else{
+        return prev + 1;
+      }
+    });
+  };
+
 {/* <button 
             onClick={incrementPrev}
             disabled={available === null || !appointment}
@@ -192,7 +239,6 @@ export default function App() {
             onSetTimes={handleSetTimes} 
             baseDay={baseDay} 
             onSetDay={onSetDay}/>
-          
           <h4>
             Block out availability by clicking a table cell.<br/>
             White indicates available and a color indicates busy.<br/>
@@ -200,13 +246,30 @@ export default function App() {
 
             
             Red indicates the cells that will change to busy if accepted.<br/>
-            Click "Accept appointment" to modify schedule.<br/>  
+            Click "Accept appointment" to modify schedule.<br/>
+            Click "Previous" or "Next" to cycle through appointments.
           </h4> 
           <div >
             <button onClick={handleSubmit} style={{ marginTop: 16, padding: "8px 16px", cursor: "pointer" }}> 
             Find appointment
             </button>
           
+          </div>
+          <div style={{ display: "flex", gap: "1rem", justifyContent: "center"}}>
+            <button 
+              onClick={handlePrev}
+              disabled={available === null || !appointment || availableLength == 0}
+              style={{ marginTop: 16, padding: "8px 16px", 
+                cursor: (available === null || availableLength == 0) ? "not-allowed" : "pointer" }}>
+              Previous
+            </button>
+            <button
+              onClick={handleNext}
+              disabled={available === null || !appointment || availableLength == 0}
+              style={{ marginTop: 16, padding: "8px 16px", 
+                cursor: (available === null || availableLength == 0) ? "not-allowed" : "pointer" }}>
+              Next
+            </button>
           </div>
           <h4>{message}</h4>
           <button
