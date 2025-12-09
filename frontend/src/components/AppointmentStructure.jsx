@@ -66,7 +66,7 @@ export default function AppointmentStructure({baseTimes, onSetTimes, baseDay, on
             flexDirection: "column", alignItems: "center"}}>
             <h4>First select day of the week.<br/> 
                 Next change the structure by selecting minutes box.<br/>
-                Click set when finished. 
+                Click "Set" when finished. 
             </h4>
 
             <table

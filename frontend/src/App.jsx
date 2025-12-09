@@ -235,7 +235,7 @@ export default function App() {
 
             
             Red indicates the cells that will change to busy if accepted.<br/>
-            Click "Accept appointment" to modify schedule.<br/>
+            Click "Accept appointment" to modify the schedule.<br/>
             Click "Previous" or "Next" to cycle through appointments.
           </h4> 
           <div >
